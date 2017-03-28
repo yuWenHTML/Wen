@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="canvas" width="400" height="400" style="border:1px solid red"></canvas> 
+</body>
+<script type="text/javascript">
+  // 饼状图的相关的数据
+  var arr = [
+    {"title":"第一季度","number":100,"color":"red"},
+    {"title":"第二季度","number":200,"color":"blue"},
+    {"title":"第三季度","number":300,"color":"green"},
+    {"title":"第四季度","number":400,"color":"yellow"}
+  ];
+  
+  var canvas = document.getElementById("canvas");
+  var context = canvas.getContext("2d");
+
+  // 绘制扇形
+  // 参数： arr=扇形数据;x,y:绘制这些扇形的坐标;r:扇形的半径
+  drawCircleFn(arr,200,200,100);
+  function drawCircleFn(arr,x,y,r){
+    // 开始角度和结束角度
+    var startAngle = 0, endAngle = 0;
+
+    // 总数
+    var sum = 0;
+    // 计算数据上的总数
+    for(var i = 0; i < arr.length; i++){
+      sum += arr[i].number;
+    }
+
+    // 绘制扇形
+    for(var i = 0; i < arr.length; i++){
+      context.beginPath();
+
+      context.moveTo(x,y);
+
+      startAngle = endAngle;
+      endAngle += (arr[i].number / sum)*Math.PI*2;
+
+      context.arc(x,y,r,startAngle,endAngle,false);
+      context.fillStyle = arr[i].color;
+      context.fill();
+
+      context.closePath();
+    }
+
+  }
+  // 绘制文字
+  // 参数:arr数据，x,y文字的坐标
+  drawTextFn(arr,300,20);
+  function drawTextFn(arr,x,y){
+    // 绘制文字和矩形
+    for(var i = 0; i < arr.length; i++){
+      // 绘制矩形
+      context.beginPath();
+      context.fillStyle = arr[i].color;
+      context.fillRect(x,y,20,20);
+      // 绘制文字
+      context.font = "15px 黑体";
+      context.fillText(arr[i].title, x+30, y+15);
+      // 累计
+      y+=30;
+
+      context.closePath();
+    }
+  }
+</script>
+</html>
